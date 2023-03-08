@@ -14,8 +14,8 @@ function get(): array
         return round($size, 2) . ' ' . $units[$i];
     };
 
-    $bytes_total = disk_total_space(".");
-    $bytes_free = disk_free_space(".");
+    $bytes_total = disk_total_space('/');
+    $bytes_free = disk_free_space('/');
     $bytes_used = $bytes_total - $bytes_free;
 
     $percent_used = round($bytes_used / $bytes_total * 100, 2);
