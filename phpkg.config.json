@@ -10,7 +10,7 @@
     "executables": [],
     "packages-directory": "Packages",
     "packages": {
-        "https:\/\/github.com\/php-repos\/test-runner": "v1.0.3"
+        "https:\/\/github.com\/php-repos\/test-runner": "v1.1.0"
     },
     "aliases": {
         "test-runner": "https:\/\/github.com\/php-repos\/test-runner"

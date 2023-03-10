@@ -27,9 +27,11 @@
         </div>
     </div>
 
+    <?php if (is_array($cryptos)): ?>
     <div class="mt-8">
         <?php require __DIR__ . "/Sections/crypto.view.php" ?>
     </div>
+    <?php endif; ?>
 
     <?php if ($show_weather): ?>
     <div class="mt-8">
@@ -37,8 +39,10 @@
     </div>
     <?php endif; ?>
 
+    <?php if (is_array($headlines)): ?>
     <div class="mt-8">
         <?php require __DIR__ . "/Sections/news.view.php" ?>
     </div>
+    <?php endif; ?>
 </body>
 </html>

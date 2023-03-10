@@ -10,9 +10,8 @@ use function Tests\Helper\up;
 
 test(
     title: 'it should show not found page when url does not exist',
-    case: function (int $pid) {
+    case: function () {
         assert_true(str_contains(get('/a-not-found-url'), 'Oops! Page Not Found'));
-        return $pid;
     },
     before: function () {
         return up();

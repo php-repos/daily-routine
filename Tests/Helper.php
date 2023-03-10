@@ -33,6 +33,7 @@ function up(): int
 function down(int $pid)
 {
     posix_kill($pid, SIGKILL);
+    sleep(1);
 }
 
 function get(string $url): string

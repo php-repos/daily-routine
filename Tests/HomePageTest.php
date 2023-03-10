@@ -2,6 +2,7 @@
 
 namespace Tests\HomePageTest;
 
+use function PhpRepos\TestRunner\Assertions\Boolean\assert_false;
 use function PhpRepos\TestRunner\Assertions\Boolean\assert_true;
 use function PhpRepos\TestRunner\Runner\test;
 use function Tests\Helper\down;
@@ -10,7 +11,7 @@ use function Tests\Helper\up;
 
 test(
     title: 'it should show the home page',
-    case: function ($pid) {
+    case: function () {
         $response = get('/');
 
         assert_has_greeting($response);
@@ -19,14 +20,87 @@ test(
         assert_has_crypto_price_list($response);
         assert_has_weather_forecast($response);
         assert_has_news_artciles($response);
-
-        return $pid;
     },
     before: function () {
         return up();
     },
     after: function ($pid) {
         down($pid);
+    }
+);
+
+test(
+    title: 'it should not show the crypto price list when the key is not defined',
+    case: function () {
+        $response = get('/');
+
+        assert_has_greeting($response);
+        assert_has_ram_status($response);
+        assert_has_hard_status($response);
+        assert_does_not_have_crypto_list($response);
+        assert_has_weather_forecast($response);
+        assert_has_news_artciles($response);
+    },
+    before: function () {
+        $api_key = getenv('COINMARKETCAP_API_KEY');
+        putenv('COINMARKETCAP_API_KEY=');
+        $pid = up();
+
+        return [$pid, $api_key];
+    },
+    after: function ($pid, $api_key) {
+        down($pid);
+        putenv('COINMARKETCAP_API_KEY=' . $api_key);
+    }
+);
+
+test(
+    title: 'it should not show the news articles when the key is not defined',
+    case: function () {
+        $response = get('/');
+
+        assert_has_greeting($response);
+        assert_has_ram_status($response);
+        assert_has_hard_status($response);
+        assert_has_crypto_price_list($response);
+        assert_has_weather_forecast($response);
+        assert_does_not_have_news_artciles($response);
+    },
+    before: function () {
+        $api_key = getenv('NEWSAPI_API_KEY');
+        putenv('NEWSAPI_API_KEY=');
+        $pid = up();
+
+        return [$pid, $api_key];
+    },
+    after: function ($pid, $api_key) {
+        down($pid);
+        putenv('NEWSAPI_API_KEY=' . $api_key);
+    }
+);
+
+test(
+    title: 'it should not show the weather forecast when the key is not defined',
+    case: function () {
+        $response = get('/');
+
+        assert_has_greeting($response);
+        assert_has_ram_status($response);
+        assert_has_hard_status($response);
+        assert_has_crypto_price_list($response);
+        assert_does_not_have_weather_forecast($response);
+        assert_has_news_artciles($response);
+    },
+    before: function () {
+        $api_key = getenv('OPENWEATHERMAP_API_KEY');
+        putenv('OPENWEATHERMAP_API_KEY=');
+        $pid = up();
+
+        return [$pid, $api_key];
+    },
+    after: function ($pid, $api_key) {
+        down($pid);
+        putenv('OPENWEATHERMAP_API_KEY=' . $api_key);
     }
 );
 
@@ -51,7 +125,12 @@ function assert_has_hard_status(string $response)
 
 function assert_has_crypto_price_list(string $response)
 {
-    assert_true(str_contains($response, "Crypto"), 'Crypto price list is not on the output.');
+    assert_true(str_contains($response, "Crypto Price List"), 'Crypto price list is not on the output.');
+}
+
+function assert_does_not_have_crypto_list(string $response)
+{
+    assert_false(str_contains($response, "Crypto Price List"), 'Crypto price list is on the output.');
 }
 
 function assert_has_weather_forecast(string $response)
@@ -59,7 +138,17 @@ function assert_has_weather_forecast(string $response)
     assert_true(str_contains($response, "Weather Forecast"), 'Weather forecast is not on the output.');
 }
 
+function assert_does_not_have_weather_forecast(string $response)
+{
+    assert_false(str_contains($response, "Weather Forecast"), 'Weather forecast is on the output.');
+}
+
 function assert_has_news_artciles(string $response)
 {
-    assert_true(str_contains($response, "News"), 'News section is not on the output.');
+    assert_true(str_contains($response, "News Headlines"), 'News section is not on the output.');
+}
+
+function assert_does_not_have_news_artciles(string $response)
+{
+    assert_false(str_contains($response, "News Headlines"), 'News section is on the output.');
 }

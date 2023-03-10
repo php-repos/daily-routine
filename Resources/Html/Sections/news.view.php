@@ -1,4 +1,4 @@
-<h2 class="text-lg font-bold mb-4">News</h2>
+<h2 class="text-lg font-bold mb-4">News Headlines</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <?php foreach ($headlines as $headline): ?>
         <div class="max-w-xl bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">

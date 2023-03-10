@@ -1,4 +1,4 @@
-<h3 class="text-lg font-bold leading-6">Crypto</h3>
+<h3 class="text-lg font-bold leading-6">Crypto Price List</h3>
 <dl class="mt-5 grid grid-cols-1 gap-5 grid-col-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-10">
     <?php foreach ($cryptos as $crypto): ?>
         <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">

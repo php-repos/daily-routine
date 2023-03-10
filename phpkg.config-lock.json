@@ -3,8 +3,8 @@
         "https:\/\/github.com\/php-repos\/test-runner": {
             "owner": "php-repos",
             "repo": "test-runner",
-            "version": "v1.0.3",
-            "hash": "80afc79a1bac48bce791b0a424357997e8ee75cb"
+            "version": "v1.1.0",
+            "hash": "119c47953485a6ec127cd896a70e96376306a954"
         },
         "https:\/\/github.com\/php-repos\/cli.git": {
             "owner": "php-repos",

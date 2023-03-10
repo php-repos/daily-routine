@@ -10,15 +10,13 @@ use function Tests\Helper\up;
 
 test(
     title: 'it should return weather for the given latitude and longitude',
-    case: function ($pid) {
+    case: function () {
         $latitude = 37.7749;
         $longitude = -122.4194;
 
         $url = "/weather?latitude=$latitude&longitude=$longitude";
         $response = get_json($url);
         assert_true(count($response) === 40);
-
-        return $pid;
     },
     before: function () {
         return up();
