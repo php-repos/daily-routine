@@ -14,6 +14,8 @@ This application was developed primarily to demonstrate how to use phpkg's `serv
 > **Note**  
 > For more information about the phpkg's serve command, check its [documentation](https://phpkg.com/documentations/serve-command).
 
+![daily-routine-screenshot.png](daily-routine-screenshot.png)
+
 ## Usage
 
 ### Standalone application
