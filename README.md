@@ -40,7 +40,7 @@ OPENWEATHERMAP_API_KEY='your-api-key'
 
 You do not need to add all keys, only define the ones you require.
 
-> ** Note **
+> **Note**
 > For all services, having a developer api key will be more than enough for daily usage.
 
 ### Usage as a package
