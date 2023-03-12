@@ -79,6 +79,7 @@ function down($process)
         usleep($interval);
 
         $status = proc_get_status($process);
+        error_log('Process status: ' . var_export($status, true));
 
         if (!$status['running']) {
             return;
@@ -87,6 +88,7 @@ function down($process)
         $timeout -= $interval;
     }
 
+    error_log('Process kill timeout reached');
     throw new Exception('Timeout reached to kill the process.');
 }
 
