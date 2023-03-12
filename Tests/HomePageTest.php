@@ -13,7 +13,7 @@ test(
     title: 'it should show the home page',
     case: function () {
         $response = get('/');
-
+var_dump($response);
         assert_has_greeting($response);
         assert_has_ram_status($response);
         assert_has_hard_status($response);
@@ -83,7 +83,7 @@ test(
     title: 'it should not show the weather forecast when the key is not defined',
     case: function () {
         $response = get('/');
-
+var_dump(shell_exec('curl -v http://localhost:8000'));
         assert_has_greeting($response);
         assert_has_ram_status($response);
         assert_has_hard_status($response);
