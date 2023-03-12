@@ -75,34 +75,19 @@ function down($process)
     $timeout = 2000000;
     $interval = 2000;
 
-    $port_is_close = function () {
-        $socket = @fsockopen('localhost', 8000, $error_code, $error_message, 0.2);
-
-        if ($socket === false) {
-            return true;
-        }
-
-        fclose($socket);
-
-        return false;
-    };
-
-    $status = [];
-
     while ($timeout > $interval) {
         usleep($interval);
 
-        proc_close($process);
         $status = proc_get_status($process);
 
-        if (!$status['running'] && $port_is_close()) {
+        if (!$status['running']) {
             return;
         }
 
         $timeout -= $interval;
     }
 
-    throw new Exception('Timeout reached to kill the process. Status: ' . $status['running'] . ' is open: ' . $port_is_close ? 'open' : 'closed');
+    throw new Exception('Timeout reached to kill the process.');
 }
 
 function get(string $url): string
