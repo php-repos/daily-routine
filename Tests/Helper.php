@@ -72,6 +72,7 @@ function up()
 function down($process)
 {
     posix_kill(proc_get_status($process)['pid'], SIGINT);
+    posix_kill(proc_get_status($process)['pid'], SIGTERM);
     $timeout = 2000000;
     $interval = 2000;
 
@@ -84,6 +85,9 @@ function down($process)
         if (!$status['running']) {
             return;
         }
+
+        posix_kill(proc_get_status($process)['pid'], SIGINT);
+        posix_kill(proc_get_status($process)['pid'], SIGTERM);
 
         $timeout -= $interval;
     }
