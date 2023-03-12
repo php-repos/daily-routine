@@ -107,7 +107,7 @@ test(
 function assert_has_greeting(string $response)
 {
     $user = trim(shell_exec('whoami'));
-    assert_true(str_contains($response, "Hello, $user!"), 'Username does not appear on the output.');
+    assert_true(str_contains($response, "Hello, $user!"), 'Username does not appear on the output.' . PHP_EOL . $user . ' OUTPUT:' . $response);
 
     $date = date('l, F j, Y');
     assert_true(str_contains($response, $date), 'Date does not appear on the output.');
