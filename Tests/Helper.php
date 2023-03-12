@@ -87,17 +87,22 @@ function down($process)
         return false;
     };
 
+    $status = [];
+
     while ($timeout > $interval) {
         usleep($interval);
 
-        if (!proc_get_status($process)['running'] && $port_is_close()) {
+        proc_close($process);
+        $status = proc_get_status($process);
+
+        if (!$status['running'] && $port_is_close()) {
             return;
         }
 
         $timeout -= $interval;
     }
 
-    throw new Exception('Timeout reached to kill the process.');
+    throw new Exception('Timeout reached to kill the process. Status: ' . $status['running'] . ' is open: ' . $port_is_close ? 'open' : 'closed');
 }
 
 function get(string $url): string
