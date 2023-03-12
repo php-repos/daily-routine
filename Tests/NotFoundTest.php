@@ -16,7 +16,7 @@ test(
     before: function () {
         return up();
     },
-    after: function (int $pid) {
-        down($pid);
+    after: function ($process) {
+        down($process);
     }
 );

@@ -24,8 +24,8 @@ test(
     before: function () {
         return up();
     },
-    after: function ($pid) {
-        down($pid);
+    after: function ($process) {
+        down($process);
     }
 );
 
@@ -44,12 +44,12 @@ test(
     before: function () {
         $api_key = getenv('COINMARKETCAP_API_KEY');
         putenv('COINMARKETCAP_API_KEY=');
-        $pid = up();
+        $process = up();
 
-        return [$pid, $api_key];
+        return [$process, $api_key];
     },
-    after: function ($pid, $api_key) {
-        down($pid);
+    after: function ($process, $api_key) {
+        down($process);
         putenv('COINMARKETCAP_API_KEY=' . $api_key);
     }
 );
@@ -69,12 +69,12 @@ test(
     before: function () {
         $api_key = getenv('NEWSAPI_API_KEY');
         putenv('NEWSAPI_API_KEY=');
-        $pid = up();
+        $process = up();
 
-        return [$pid, $api_key];
+        return [$process, $api_key];
     },
-    after: function ($pid, $api_key) {
-        down($pid);
+    after: function ($process, $api_key) {
+        down($process);
         putenv('NEWSAPI_API_KEY=' . $api_key);
     }
 );
@@ -94,12 +94,12 @@ test(
     before: function () {
         $api_key = getenv('OPENWEATHERMAP_API_KEY');
         putenv('OPENWEATHERMAP_API_KEY=');
-        $pid = up();
+        $process = up();
 
-        return [$pid, $api_key];
+        return [$process, $api_key];
     },
-    after: function ($pid, $api_key) {
-        down($pid);
+    after: function ($process, $api_key) {
+        down($process);
         putenv('OPENWEATHERMAP_API_KEY=' . $api_key);
     }
 );

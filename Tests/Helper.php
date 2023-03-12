@@ -2,38 +2,102 @@
 
 namespace Tests\Helper;
 
+use Exception;
 use function PhpRepos\FileManager\Resolver\root;
 
-function up(): int
+function up()
 {
     $directory = root() . 'Public/';
     $port = 8000;
 
     $command = "php -S localhost:$port -t $directory";
 
-    exec("$command > /dev/null 2>&1 & echo $!", $output);
+    $descriptors = [
+        0 => ['pipe', 'r'],
+        1 => ['pipe', 'w'],
+        2 => ['pipe', 'w'],
+    ];
+    $process = proc_open($command, $descriptors, $pipes);
+    stream_set_blocking($pipes[1], 0);
+    stream_set_blocking($pipes[2], 0);
 
-    $pid = $output[0];
+    $output = '';
+    $error = '';
 
-    // Wait for the server to start up
-    sleep(1);
+    $timeout = 2000000;
+    $interval = 2000;
 
-    // Check if the server is running
-    exec("ps $pid", $is_running);
+    $port_is_open = function () {
+        $socket = @fsockopen('localhost', 8000, $error_code, $error_message, 0.2);
 
-    if (!count($is_running) >= 2) {
-        echo "Failed to start server." . PHP_EOL;
-        posix_kill($pid, SIGKILL);
-        exit(1);
+        if ($socket === false) {
+            return false;
+        }
+
+        return fclose($socket);
+    };
+
+    while ($timeout > $interval) {
+        usleep($interval);
+
+        if ($port_is_open()) {
+            return $process;
+        }
+
+        $status = proc_get_status($process);
+        $output .= stream_get_contents($pipes[1]);
+        $error .= stream_get_contents($pipes[2]);
+
+        if ($status['running'] !== true) {
+            $exception_msg = 'Error in serving the server. Exit code: ' . $status['exitcode'] . PHP_EOL;
+            $exception_msg .= 'Output: ' . $output . PHP_EOL;
+            $exception_msg .= 'Error: ' . $error . PHP_EOL;
+            throw new Exception($exception_msg);
+        }
+
+        $timeout -= $interval;
     }
 
-    return $pid;
+    $output .= stream_get_contents($pipes[1]);
+    $error .= stream_get_contents($pipes[2]);
+    $exception_msg = 'Timeout reached to open the server.' . PHP_EOL;
+    $exception_msg .= 'Output: ' . $output . PHP_EOL;
+    $exception_msg .= 'Error: ' . $error . PHP_EOL;
+
+    posix_kill(proc_get_status($process)['pid'], SIGINT);
+
+    throw new Exception($exception_msg);
 }
 
-function down(int $pid)
+function down($process)
 {
-    posix_kill($pid, SIGKILL);
-    sleep(1);
+    posix_kill(proc_get_status($process)['pid'], SIGINT);
+    $timeout = 2000000;
+    $interval = 2000;
+
+    $port_is_close = function () {
+        $socket = @fsockopen('localhost', 8000, $error_code, $error_message, 0.2);
+
+        if ($socket === false) {
+            return true;
+        }
+
+        fclose($socket);
+
+        return false;
+    };
+
+    while ($timeout > $interval) {
+        usleep($interval);
+
+        if (!proc_get_status($process)['running'] && $port_is_close()) {
+            return;
+        }
+
+        $timeout -= $interval;
+    }
+
+    throw new Exception('Timeout reached to kill the process.');
 }
 
 function get(string $url): string
