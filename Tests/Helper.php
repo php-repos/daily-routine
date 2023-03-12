@@ -102,6 +102,8 @@ function get(string $url): string
     curl_setopt($ch, CURLOPT_HTTPGET, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: text/html"));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_STDERR, fopen('php://stderr', 'w'));
     $response = curl_exec($ch);
     if (curl_errno($ch)) {
         echo "cURL error: " . curl_error($ch);
