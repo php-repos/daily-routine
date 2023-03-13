@@ -13,7 +13,9 @@ test(
     title: 'it should show the home page',
     case: function () {
         $response = get('/');
-var_dump($response);
+
+        sleep(1);
+        
         assert_has_greeting($response);
         assert_has_ram_status($response);
         assert_has_hard_status($response);
