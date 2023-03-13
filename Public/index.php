@@ -20,5 +20,5 @@ try {
     header('Content-Type: ' . $response->header->content_type);
     echo $response->body->content;
 } catch (Exception $exception) {
-    echo $exception->getMessage();
+    echo 'here is the message: ' . $exception->getMessage();
 }
