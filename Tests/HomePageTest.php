@@ -15,7 +15,7 @@ test(
         $response = get('/');
 
         sleep(1);
-        
+
         assert_has_greeting($response);
         assert_has_ram_status($response);
         assert_has_hard_status($response);
@@ -85,7 +85,7 @@ test(
     title: 'it should not show the weather forecast when the key is not defined',
     case: function () {
         $response = get('/');
-var_dump(shell_exec('curl -v http://localhost:8000'));
+
         assert_has_greeting($response);
         assert_has_ram_status($response);
         assert_has_hard_status($response);
@@ -109,7 +109,7 @@ var_dump(shell_exec('curl -v http://localhost:8000'));
 function assert_has_greeting(string $response)
 {
     $user = trim(shell_exec('whoami'));
-    assert_true(str_contains($response, "Hello, $user!"), 'Username does not appear on the output.' . PHP_EOL . $user . ' OUTPUT:' . $response);
+    assert_true(str_contains($response, "Hello, $user!"), 'Username does not appear on the output.');
 
     $date = date('l, F j, Y');
     assert_true(str_contains($response, $date), 'Date does not appear on the output.');
