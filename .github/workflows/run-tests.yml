@@ -11,6 +11,10 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    env:
+      COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
+      NEWSAPI_API_KEY: ${{ secrets.NEWSAPI_API_KEY }}
+      OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
     strategy:
       fail-fast: true
       matrix:
@@ -25,10 +29,6 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
-        env:
-          COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
-          NEWSAPI_API_KEY: ${{ secrets.NEWSAPI_API_KEY }}
-          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, mbstring, zip
