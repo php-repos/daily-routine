@@ -13,22 +13,22 @@ use function PhpRepos\DailyRoutines\Kernel\UserManagement\Authentication\system_
 
 return function (Request $request): Response
 {
-    error_log('endpoint received the request');
-    error_log('find user');
+    error_log('endpoint received the request', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
+    error_log('find user', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
     $user = system_user();
-    error_log('user is ' . $user . ' get date');
+    error_log('user is ' . $user . ' get date', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
     $date = date('l, F j, Y');
-    error_log('get hard status');
+    error_log('get hard status', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
     $hard_status = HardStatus\get();
-    error_log('get ram status');
+    error_log('get ram status', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
     $ram_status = RamStatus\get();
-    error_log('get crypto list');
+    error_log('get crypto list', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
     $cryptos = getenv('COINMARKETCAP_API_KEY') && strlen(getenv('COINMARKETCAP_API_KEY')) > 0 ? LatestListing\get() : null;
-    error_log('get headlines');
+    error_log('get headlines', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
     $headlines = getenv('NEWSAPI_API_KEY') && strlen(getenv('NEWSAPI_API_KEY')) > 0 ? Headlines\get() : null;
-    error_log('get weather');
+    error_log('get weather', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
     $show_weather = getenv('OPENWEATHERMAP_API_KEY') && strlen(getenv('OPENWEATHERMAP_API_KEY')) > 0;
-    error_log('create view');
+    error_log('create view', 3, \PhpRepos\FileManager\Resolver\root() . '/logs.txt');
     $html = Html\view(
         filename: 'home',
         variables: compact(
