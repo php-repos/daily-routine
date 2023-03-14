@@ -15,7 +15,7 @@ test(
         $response = get('/');
 
         sleep(1);
-        error_log('to check difference');
+
         assert_has_greeting($response);
         assert_has_ram_status($response);
         assert_has_hard_status($response);
@@ -45,7 +45,7 @@ test(
     },
     before: function () {
         $api_key = getenv('COINMARKETCAP_API_KEY');
-        putenv('COINMARKETCAP_API_KEY=');
+        putenv('COINMARKETCAP_API_KEY');
         $process = up();
 
         return [$process, $api_key];
@@ -70,7 +70,7 @@ test(
     },
     before: function () {
         $api_key = getenv('NEWSAPI_API_KEY');
-        putenv('NEWSAPI_API_KEY=');
+        putenv('NEWSAPI_API_KEY');
         $process = up();
 
         return [$process, $api_key];
@@ -95,7 +95,7 @@ test(
     },
     before: function () {
         $api_key = getenv('OPENWEATHERMAP_API_KEY');
-        putenv('OPENWEATHERMAP_API_KEY=');
+        putenv('OPENWEATHERMAP_API_KEY');
         $process = up();
 
         return [$process, $api_key];

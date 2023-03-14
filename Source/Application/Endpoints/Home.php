@@ -17,9 +17,9 @@ return function (Request $request): Response
     $date = date('l, F j, Y');
     $hard_status = HardStatus\get();
     $ram_status = RamStatus\get();
-    $cryptos = getenv('COINMARKETCAP_API_KEY') && strlen(getenv('COINMARKETCAP_API_KEY')) > 0 ? LatestListing\get() : null;
-    $headlines = getenv('NEWSAPI_API_KEY') && strlen(getenv('NEWSAPI_API_KEY')) > 0 ? Headlines\get() : null;
-    $show_weather = getenv('OPENWEATHERMAP_API_KEY') && strlen(getenv('OPENWEATHERMAP_API_KEY')) > 0;
+    $cryptos = getenv('COINMARKETCAP_API_KEY') ? LatestListing\get() : null;
+    $headlines = getenv('NEWSAPI_API_KEY') ? Headlines\get() : null;
+    $show_weather = getenv('OPENWEATHERMAP_API_KEY');
     $html = Html\view(
         filename: 'home',
         variables: compact(
