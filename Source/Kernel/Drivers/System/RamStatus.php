@@ -25,8 +25,10 @@ function get(): array
     } elseif (strpos($os, 'Darwin') === 0) {
         // macOS
         exec('vm_stat | grep "Pages free:"', $free_output);
+        var_dump($free_output);
         $free_pages = (int) str_replace('.', '', explode(' ', trim($free_output[0]))[2]) * 4096;
         exec('sysctl hw.memsize', $total_output);
+        var_dump($total_output);
         $total_memory = round($total_output[0] / 1024 / 1024);
         $used_memory = round(($total_memory - ($free_pages / 1024 / 1024)) / 1024);
     } else {
