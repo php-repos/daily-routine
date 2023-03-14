@@ -15,7 +15,7 @@ test(
         $response = get('/');
 
         sleep(1);
-
+        error_log('to check difference');
         assert_has_greeting($response);
         assert_has_ram_status($response);
         assert_has_hard_status($response);
