@@ -25,12 +25,10 @@ function get(): array
     } elseif (strpos($os, 'Darwin') === 0) {
         // macOS
         exec('vm_stat | grep "Pages free:"', $output);
-        error_log(json_encode($output));
-        $free_pages = explode(' ', trim($output[0]))[2];
+        $free_pages = (int) str_replace('.', '', explode(' ', trim($output[0]))[2]) * 4096;
         exec('sysctl hw.memsize', $output);
-        error_log(json_encode($output));
         $total_memory = round($output[0] / 1024 / 1024);
-        $used_memory = round(($total_memory - ($free_pages * 4)) / 1024);
+        $used_memory = round(($total_memory - ($free_pages / 1024 / 1024)) / 1024);
     } else {
         return [
             'total' => 'Not Supported OS',
