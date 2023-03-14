@@ -9,24 +9,26 @@ function get(): array
     };
 
     $os = PHP_OS;
-    if (str_starts_with($os, 'Win')) {
+    if (strpos($os, 'Win') === 0) {
         // Windows
         exec('systeminfo | findstr /C:"Total Physical Memory"', $output);
         $total_memory = explode(':', $output[0])[1];
         exec('systeminfo | findstr /C:"Available Physical Memory"', $output);
         $used_memory = $total_memory - explode(':', $output[0])[1];
-    } elseif (str_starts_with($os, 'Linux')) {
+    } elseif (strpos($os, 'Linux') === 0) {
         // Linux
         exec('free -m', $output);
         $memory = explode("\n", $output[1]);
         $memory = preg_split('/\s+/', $memory[0]);
         $total_memory = $memory[1];
         $used_memory = $memory[2];
-    } elseif (str_starts_with($os, 'Darwin')) {
-        $output = shell_exec('sysctl hw.memsize vm.page_free_count');
-        $memory = explode("\n", $output);
-        $total_memory = round($memory[0] / 1024 / 1024);
-        $used_memory = round(($total_memory - ($memory[1] * 4)) / 1024);
+    } elseif (strpos($os, 'Darwin') === 0) {
+        // macOS
+        exec('vm_stat | grep "Pages free:"', $output);
+        $free_pages = explode(' ', trim($output[0]))[2];
+        exec('sysctl hw.memsize', $output);
+        $total_memory = round($output[0] / 1024 / 1024);
+        $used_memory = round(($total_memory - ($free_pages * 4)) / 1024);
     } else {
         return [
             'total' => 'Not Supported OS',

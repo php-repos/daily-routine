@@ -2,7 +2,6 @@
 
 namespace Tests\HomePageTest;
 
-use function PhpRepos\FileManager\Resolver\root;
 use function PhpRepos\TestRunner\Assertions\Boolean\assert_false;
 use function PhpRepos\TestRunner\Assertions\Boolean\assert_true;
 use function PhpRepos\TestRunner\Runner\test;
@@ -29,9 +28,6 @@ test(
     },
     after: function ($process) {
         down($process);
-    },
-    finally: function () {
-        echo file_get_contents(root() . '/Public/logs.txt');
     }
 );
 
