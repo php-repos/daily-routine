@@ -5,7 +5,7 @@ namespace PhpRepos\DailyRoutines\Kernel\Drivers\System\RamStatus;
 function get(): array
 {
     $MB_to_GB = function ($mb) {
-        return number_format($mb / 1024, 2) . ' GB';
+        return round($mb / 1024, 2) . ' GB';
     };
 
     $os = PHP_OS;
@@ -14,7 +14,7 @@ function get(): array
         exec('systeminfo | findstr /C:"Total Physical Memory"', $output);
         $total_memory = explode(':', $output[0])[1];
         exec('systeminfo | findstr /C:"Available Physical Memory"', $output);
-        $used_memory = $total_memory - explode(':', $output[0])[1];
+        $used_memory = (int) $total_memory - (int) explode(':', $output[0])[1];
     } elseif (strpos($os, 'Linux') === 0) {
         // Linux
         exec('free -m', $output);
@@ -24,10 +24,10 @@ function get(): array
         $used_memory = $memory[2];
     } elseif (strpos($os, 'Darwin') === 0) {
         // macOS
-        exec('vm_stat | grep "Pages free:"', $output);
-        $free_pages = (int) str_replace('.', '', explode(' ', trim($output[0]))[2]) * 4096;
-        exec('sysctl hw.memsize', $output);
-        $total_memory = round($output[0] / 1024 / 1024);
+        exec('vm_stat | grep "Pages free:"', $free_output);
+        $free_pages = (int) str_replace('.', '', explode(' ', trim($free_output[0]))[2]) * 4096;
+        exec('sysctl hw.memsize', $total_output);
+        $total_memory = round($total_output[0] / 1024 / 1024);
         $used_memory = round(($total_memory - ($free_pages / 1024 / 1024)) / 1024);
     } else {
         return [
