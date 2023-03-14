@@ -41,10 +41,6 @@ function up()
         usleep($interval);
 
         if ($port_is_open()) {
-            $output .= stream_get_contents($pipes[1]);
-            $error .= stream_get_contents($pipes[2]);
-
-            echo 'OUTPUT: ' . $output . PHP_EOL . ' ERROR: ' . $error . PHP_EOL;
             return $process;
         }
 
