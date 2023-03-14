@@ -31,7 +31,7 @@ test(
         down($process);
     },
     finally: function () {
-        echo file_get_contents(root() . '/logs.txt');
+        echo file_get_contents(root() . '/Public/logs.txt');
     }
 );
 
