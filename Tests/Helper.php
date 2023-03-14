@@ -17,6 +17,7 @@ function up()
         1 => ['pipe', 'w'],
         2 => ['pipe', 'w'],
     ];
+    var_dump($_ENV);
     $process = proc_open($command, $descriptors, $pipes);
     stream_set_blocking($pipes[1], 0);
     stream_set_blocking($pipes[2], 0);
