@@ -2,7 +2,6 @@
 
 namespace Tests\HomePageTest;
 
-use function PhpRepos\FileManager\Resolver\root;
 use function PhpRepos\TestRunner\Assertions\Boolean\assert_false;
 use function PhpRepos\TestRunner\Assertions\Boolean\assert_true;
 use function PhpRepos\TestRunner\Runner\test;
@@ -38,6 +37,8 @@ test(
     case: function () {
         $response = get('/');
 
+        echo 'file content:' . file_get_contents(__DIR__ . '/../Public/log.txt') . PHP_EOL;
+var_dump($response);
         assert_has_greeting($response);
         assert_has_ram_status($response);
         assert_has_hard_status($response);
@@ -55,7 +56,6 @@ test(
     after: function ($process, $api_key) {
         down($process);
         putenv('COINMARKETCAP_API_KEY=' . $api_key);
-        echo 'file content:' . file_get_contents(__DIR__ . '/../Public/log.txt') . PHP_EOL;
     }
 );
 
@@ -63,6 +63,8 @@ test(
     title: 'it should not show the news articles when the key is not defined',
     case: function () {
         $response = get('/');
+
+        echo 'file content:' . file_get_contents(__DIR__ . '/../Public/log.txt') . PHP_EOL;
 
         assert_has_greeting($response);
         assert_has_ram_status($response);
