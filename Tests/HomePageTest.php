@@ -29,7 +29,7 @@ test(
     },
     after: function ($process) {
         down($process);
-        echo file_get_contents(__DIR__ . '/../Public/log.txt');
+        echo 'file content: ' . file_get_contents(__DIR__ . '/../Public/log.txt') . PHP_EOL;
     }
 );
 
@@ -55,7 +55,7 @@ test(
     after: function ($process, $api_key) {
         down($process);
         putenv('COINMARKETCAP_API_KEY=' . $api_key);
-        echo file_get_contents(__DIR__ . '/../Public/log.txt');
+        echo 'file content:' . file_get_contents(__DIR__ . '/../Public/log.txt') . PHP_EOL;
     }
 );
 

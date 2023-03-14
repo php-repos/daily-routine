@@ -17,7 +17,7 @@ function up()
         1 => ['pipe', 'w'],
         2 => ['pipe', 'w'],
     ];
-    error_log(json_encode([
+    error_log('error log: ' . json_encode([
         'COINMARKETCAP_API_KEY' => getenv('COINMARKETCAP_API_KEY'),
         'NEWSAPI_API_KEY' => getenv('NEWSAPI_API_KEY'),
         'OPENWEATHERMAP_API_KEY' => getenv('OPENWEATHERMAP_API_KEY'),
