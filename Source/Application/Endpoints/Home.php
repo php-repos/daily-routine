@@ -13,14 +13,22 @@ use function PhpRepos\DailyRoutines\Kernel\UserManagement\Authentication\system_
 
 return function (Request $request): Response
 {
+    error_log('endpoint received the request');
+    error_log('find user');
     $user = system_user();
+    error_log('user is ' . $user . ' get date');
     $date = date('l, F j, Y');
+    error_log('get hard status');
     $hard_status = HardStatus\get();
+    error_log('get ram status');
     $ram_status = RamStatus\get();
+    error_log('get crypto list');
     $cryptos = getenv('COINMARKETCAP_API_KEY') && strlen(getenv('COINMARKETCAP_API_KEY')) > 0 ? LatestListing\get() : null;
+    error_log('get headlines');
     $headlines = getenv('NEWSAPI_API_KEY') && strlen(getenv('NEWSAPI_API_KEY')) > 0 ? Headlines\get() : null;
+    error_log('get weather');
     $show_weather = getenv('OPENWEATHERMAP_API_KEY') && strlen(getenv('OPENWEATHERMAP_API_KEY')) > 0;
-
+    error_log('create view');
     $html = Html\view(
         filename: 'home',
         variables: compact(
