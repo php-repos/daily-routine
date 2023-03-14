@@ -2,6 +2,7 @@
 
 namespace Tests\HomePageTest;
 
+use function PhpRepos\FileManager\Resolver\root;
 use function PhpRepos\TestRunner\Assertions\Boolean\assert_false;
 use function PhpRepos\TestRunner\Assertions\Boolean\assert_true;
 use function PhpRepos\TestRunner\Runner\test;
@@ -28,6 +29,7 @@ test(
     },
     after: function ($process) {
         down($process);
+        echo file_get_contents(__DIR__ . '/../Public/log.txt');
     }
 );
 
@@ -53,6 +55,7 @@ test(
     after: function ($process, $api_key) {
         down($process);
         putenv('COINMARKETCAP_API_KEY=' . $api_key);
+        echo file_get_contents(__DIR__ . '/../Public/log.txt');
     }
 );
 

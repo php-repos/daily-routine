@@ -17,7 +17,11 @@ function up()
         1 => ['pipe', 'w'],
         2 => ['pipe', 'w'],
     ];
-    var_dump($_ENV);
+    error_log(json_encode([
+        'COINMARKETCAP_API_KEY' => getenv('COINMARKETCAP_API_KEY'),
+        'NEWSAPI_API_KEY' => getenv('NEWSAPI_API_KEY'),
+        'OPENWEATHERMAP_API_KEY' => getenv('OPENWEATHERMAP_API_KEY'),
+    ]));
     $process = proc_open($command, $descriptors, $pipes);
     stream_set_blocking($pipes[1], 0);
     stream_set_blocking($pipes[2], 0);
