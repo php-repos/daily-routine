@@ -10,7 +10,7 @@ function up()
     $directory = root() . 'Public/';
     $port = 8000;
 
-    $command = "php -S localhost:$port -t $directory";
+    $command = "php -S localhost:$port -t $directory -d COINMARKETCAP_API_KEY=";
 
     $descriptors = [
         0 => ['pipe', 'r'],

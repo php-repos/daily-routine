@@ -2,27 +2,23 @@
 
 namespace PhpRepos\DailyRoutines\Kernel\Drivers\System\RamStatus;
 
+use function PhpRepos\DailyRoutines\Kernel\Drivers\System\OS\is_linux;
+use function PhpRepos\DailyRoutines\Kernel\Drivers\System\OS\is_mac;
+
 function get(): array
 {
     $MB_to_GB = function ($mb) {
         return round($mb / 1024, 2) . ' GB';
     };
 
-    $os = PHP_OS;
-    if (strpos($os, 'Win') === 0) {
-        // Windows
-        exec('systeminfo | findstr /C:"Total Physical Memory"', $output);
-        $total_memory = explode(':', $output[0])[1];
-        exec('systeminfo | findstr /C:"Available Physical Memory"', $output);
-        $used_memory = (int) $total_memory - (int) explode(':', $output[0])[1];
-    } elseif (strpos($os, 'Linux') === 0) {
+    if (is_linux()) {
         // Linux
         exec('free -m', $output);
         $memory = explode("\n", $output[1]);
         $memory = preg_split('/\s+/', $memory[0]);
         $total_memory = $memory[1];
         $used_memory = $memory[2];
-    } elseif (strpos($os, 'Darwin') === 0) {
+    } elseif (is_mac()) {
         // macOS
         exec('vm_stat | grep "Pages free:"', $free_output);
         $free_pages = (int) str_replace('.', '', explode(' ', trim($free_output[0]))[2]) * 4096;
