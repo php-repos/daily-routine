@@ -1,0 +1,53 @@
+name: run-tests
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [macos-latest]
+        php: [8.2, 8.1]
+
+    name: P${{ matrix.php }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, mbstring, zip
+          coverage: none
+          tools: none
+
+      - name: Install phpkg
+        run: bash -c "$(curl -fsSL https://raw.github.com/php-repos/phpkg-installation/master/install.sh)"
+
+      - name: Set Credentials
+        run: ~/.phpkg/phpkg credential github.com ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install
+        run: ~/.phpkg/phpkg install
+
+      - name: Build
+        run: ~/.phpkg/phpkg build production
+
+      - name: Execute tests
+        env:
+          COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
+          NEWSAPI_API_KEY: ${{ secrets.NEWSAPI_API_KEY }}
+          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+        run: |
+          cd builds/production
+          php test-runner
